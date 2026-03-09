@@ -13,4 +13,15 @@ const projects = defineCollection({
   }),
 });
 
-export const collections = { projects };
+// ブログ用コレクションを追加
+const blog = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    date: z.date(),
+    tags: z.array(z.string()),
+  }),
+});
+
+export const collections = { projects, blog };
