@@ -1,37 +1,49 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import TextSplitter from '../components/TextSplitter.astro';
 ---
 
 <BaseLayout title="Home">
+  <!-- Hero Section -->
   <section class="hero">
     <div class="container">
       <p class="hero-tag">Web Developer</p>
       <h1 class="hero-title">
-				<span class="line">Hello,</span>
-        <span class="line">I'm <span class="highlight">Shota</span>.</span>
-			</h1>
-      <p class="hero-sub">フロントエンド技術を学びながら、ものづくりを楽しんでいます。</p>
-			<div class="hero-cta">
+        <span class="line">
+          <TextSplitter text="Hello," />
+        </span>
+        <span class="line">
+          <TextSplitter text="I'm " />
+          <span class="highlight"><TextSplitter text="Shota" /></span>
+          <TextSplitter text="." />
+        </span>
+      </h1>
+      <p class="hero-sub">
+        フロントエンド技術を学びながら、ものづくりを楽しんでいます。
+      </p>
+      <div class="hero-cta">
         <a href="/projects" class="btn-primary">Works を見る</a>
         <a href="/blog" class="btn-ghost">Blog を読む</a>
       </div>
     </div>
-		<div class="hero-glow"></div>
+    <div class="hero-glow"></div>
   </section>
-	<section class="about" id="about">
+
+  <!-- About Section -->
+  <section class="about" id="about">
     <div class="container about-grid">
-      <div class="about-label">
+      <div class="about-label reveal">
         <span class="section-number">01</span>
         <span class="section-tag">About</span>
       </div>
       <div class="about-content">
-        <h2 class="about-title">自分について</h2>
-        <p class="about-text">
+        <h2 class="about-title reveal">自分について</h2>
+        <p class="about-text reveal">
           Web開発を学び始めたフロントエンドエンジニア志望です。
           JavaScript / TypeScript / React を学び、
           現在はAstroを使ったポートフォリオ制作に取り組んでいます。
         </p>
-        <p class="about-text">
+        <p class="about-text reveal">
           きれいなUIとスムーズなアニメーションのあるサイトを作ることが好きです。
         </p>
       </div>
@@ -68,16 +80,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   .hero-title .line {
     display: block;
-    opacity: 0;
-    transform: translateY(40px);
   }
 
   .highlight {
-    background: linear-gradient(135deg, var(--accent), #8b5cf6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+  background: linear-gradient(135deg, var(--accent), #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* highlight内のcharにもグラデーションを継承させる */
+.highlight :global(.char) {
+  background: linear-gradient(135deg, var(--accent), #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
   .hero-sub {
     font-size: 18px;
@@ -186,26 +204,33 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <script>
   import gsap from 'gsap';
+  import { animate, stagger } from 'animejs';
 
-  gsap.timeline({ delay: 0.3 })
-    .to('.hero-tag', {
-      opacity: 1,
-      duration: 0.6,
-      ease: 'power2.out',
-    })
-    .to('.hero-title .line', {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: 'power3.out',
-    }, '-=0.3')
+  // Hero タグのフェードイン
+  gsap.to('.hero-tag', {
+    opacity: 1,
+    duration: 0.6,
+    delay: 0.3,
+    ease: 'power2.out',
+  });
+
+  // 文字を1文字ずつアニメーション（Anime.js v4）
+  animate('.hero-title .char', {
+    opacity: [0, 1],
+    translateY: [20, 0],
+    delay: stagger(30, { start: 600 }),
+    duration: 600,
+    ease: 'outCubic',
+  });
+
+  // サブテキストとボタンのフェードイン（GSAP）
+  gsap.timeline({ delay: 1.4 })
     .to('.hero-sub', {
       opacity: 1,
       y: 0,
       duration: 0.6,
       ease: 'power2.out',
-    }, '-=0.4')
+    })
     .to('.hero-cta', {
       opacity: 1,
       y: 0,

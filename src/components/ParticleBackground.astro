@@ -1,0 +1,52 @@
+<div class="particles" id="particles">
+  {Array.from({ length: 30 }).map((_, i) => (
+    <div class="particle" data-index={i}></div>
+  ))}
+</div>
+
+<style>
+  .particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--accent);
+    border-radius: 50%;
+    opacity: 0;
+  }
+</style>
+
+<script>
+  import { animate, utils } from 'animejs';
+
+  const particles = document.querySelectorAll('.particle');
+
+  particles.forEach((particle) => {
+    const el = particle as HTMLElement;
+
+    el.style.left = Math.random() * 100 + '%';
+    el.style.top = Math.random() * 100 + '%';
+
+    animate(el, {
+      translateX: utils.random(-150, 150),
+      translateY: utils.random(-150, 150),
+      opacity: [0, Math.random() * 0.3 + 0.1],
+      scale: [0, Math.random() * 1.5 + 0.5],
+      duration: utils.random(4000, 8000),
+      delay: utils.random(0, 3000),
+      direction: 'alternate',
+      loop: true,
+      ease: 'inOutSine',
+    });
+  });
+</script>
