@@ -1,17 +1,19 @@
 ---
-
+const name = "Shota";
+const skills = ["JavaScript", "TypeScript", "React", "Astro"];
 ---
 
-<html lang="en">
+<html lang="ja">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<title>{`${name}のポートフォリオ`}</title>
 	</head>
 	<body>
-		<h1>Astro</h1>
+		<h1>{`こんにちは、${name}です`}</h1>
+		<p>Astroでポートフォリオを作っています。</p>
+		<h2>学んでいる技術</h2>
+		<ul>
+			{skills.map((skill) => <li>{skill}</li>)}
+		</ul>
 	</body>
 </html>
