@@ -197,6 +197,16 @@ const skillCategories = [
     border-radius: 3px;
     transition: width 1s ease-out;
   }
+
+  @media (max-width: 768px) {
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .skill-card {
+    padding: 24px;
+  }
+}
 </style>
 
 <script>

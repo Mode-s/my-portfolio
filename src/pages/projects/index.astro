@@ -151,6 +151,23 @@ const projects = (await getCollection('projects')).sort(
     color: var(--accent);
     transform: translateX(4px);
   }
+
+  @media (max-width: 768px) {
+  .project-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 24px;
+  }
+
+  .project-index span {
+    font-size: 32px;
+  }
+
+  .project-arrow {
+    display: none;
+  }
+}
 </style>
 
 <script>
