@@ -200,6 +200,22 @@ import TextSplitter from '../components/TextSplitter.astro';
     margin-bottom: 16px;
     max-width: 560px;
   }
+
+	@media (max-width: 768px) {
+  .hero-title {
+    letter-spacing: -1px;
+  }
+
+  .hero-cta {
+    flex-direction: column;
+    width: fit-content;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
 </style>
 
 <script>

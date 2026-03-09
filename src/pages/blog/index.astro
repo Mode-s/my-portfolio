@@ -157,6 +157,23 @@ function formatDate(date: Date): string {
     color: var(--accent);
     transform: translateX(4px);
   }
+
+  @media (max-width: 768px) {
+  .blog-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 20px 16px;
+  }
+
+  .blog-meta {
+    width: 100%;
+  }
+
+  .blog-arrow {
+    display: none;
+  }
+}
 </style>
 
 <script>
