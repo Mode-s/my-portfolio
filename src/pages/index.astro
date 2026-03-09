@@ -1,19 +1,44 @@
 ---
-const name = "Shota";
-const skills = ["JavaScript", "TypeScript", "React", "Astro"];
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<html lang="ja">
-	<head>
-		<meta charset="utf-8" />
-		<title>{`${name}のポートフォリオ`}</title>
-	</head>
-	<body>
-		<h1>{`こんにちは、${name}です`}</h1>
-		<p>Astroでポートフォリオを作っています。</p>
-		<h2>学んでいる技術</h2>
-		<ul>
-			{skills.map((skill) => <li>{skill}</li>)}
-		</ul>
-	</body>
-</html>
+<BaseLayout title="Home">
+  <section class="hero">
+    <div class="container">
+      <p class="hero-tag">Web Developer</p>
+      <h1 class="hero-title">Hello, I'm Shota.</h1>
+      <p class="hero-sub">フロントエンド技術を学びながら、ものづくりを楽しんでいます。</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    display: flex;
+    align-items: center;
+    min-height: calc(100vh - 64px);
+  }
+
+  .hero-tag {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--accent);
+    margin-bottom: 16px;
+    letter-spacing: 2px;
+  }
+
+  .hero-title {
+    font-size: clamp(40px, 8vw, 72px);
+    font-weight: 700;
+    letter-spacing: -2px;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  .hero-sub {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 480px;
+    line-height: 1.8;
+  }
+</style>
