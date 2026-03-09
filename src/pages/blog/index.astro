@@ -1,0 +1,173 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// 日付の新しい順に並べる
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+
+// 日付フォーマット用の関数
+function formatDate(date: Date): string {
+  return date.toLocaleDateString('ja-JP', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+---
+
+<BaseLayout title="Blog">
+  <section class="page-header">
+    <div class="container">
+      <span class="section-number">04</span>
+      <h1 class="page-title">Blog</h1>
+      <p class="page-desc">学んだことや考えたことを記録しています。</p>
+    </div>
+  </section>
+
+  <section class="blog-section">
+    <div class="container">
+      <div class="blog-list">
+        {posts.map((post) => (
+          <a href={`/blog/${post.slug}`} class="blog-card">
+            <div class="blog-meta">
+              <time class="blog-date">{formatDate(post.data.date)}</time>
+              <div class="blog-tags">
+                {post.data.tags.map((tag) => (
+                  <span class="tag">{tag}</span>
+                ))}
+              </div>
+            </div>
+            <div class="blog-body">
+              <h2 class="blog-title">{post.data.title}</h2>
+              <p class="blog-desc">{post.data.description}</p>
+            </div>
+            <span class="blog-arrow">→</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-header {
+    padding-top: 60px;
+    padding-bottom: 0;
+  }
+
+  .section-number {
+    font-family: var(--font-mono);
+    font-size: 64px;
+    font-weight: 700;
+    color: var(--bg-card);
+    line-height: 1;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .page-title {
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 700;
+    letter-spacing: -2px;
+    margin-bottom: 16px;
+  }
+
+  .page-desc {
+    color: var(--text-secondary);
+    font-size: 16px;
+  }
+
+  /* ── ブログ一覧 ── */
+  .blog-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .blog-card {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 28px 24px;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s, padding-left 0.3s;
+  }
+
+  .blog-card:hover {
+    background: var(--bg-card);
+    padding-left: 32px;
+    opacity: 1;
+  }
+
+  .blog-meta {
+    flex-shrink: 0;
+    width: 180px;
+  }
+
+  .blog-date {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-secondary);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .blog-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text-secondary);
+  }
+
+  .blog-body {
+    flex: 1;
+  }
+
+  .blog-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .blog-desc {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .blog-arrow {
+    font-size: 20px;
+    color: var(--border);
+    transition: color 0.3s, transform 0.3s;
+  }
+
+  .blog-card:hover .blog-arrow {
+    color: var(--accent);
+    transform: translateX(4px);
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+
+  gsap.from('.blog-card', {
+    opacity: 0,
+    y: 16,
+    duration: 0.4,
+    stagger: 0.08,
+    ease: 'power2.out',
+    delay: 0.2,
+  });
+</script>
