@@ -1,0 +1,214 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const skillCategories = [
+    {
+        title: "Language",
+        icon: "{ }",
+        skills: [
+            { name: "JavaScript", level: 80 },
+            { name: "TypeScript", level: 70 },
+            { name: "HTML / CSS", level: 85 },
+        ],
+    },
+    {
+        title: "Frameworks",
+        icon: "⚡",
+        skills: [
+            { name: "React", level: 65 },
+            { name: "Next.js", level: 50 },
+            { name: "Astro", level: 60 },
+        ],
+    },
+    {
+        title: "Tools",
+        icon: "🛠",
+        skills: [
+            { name: "Git / GitHub", level: 70 },
+            { name: "VS Code", level: 85 },
+            { name: "npm", level: 0},
+        ],
+    },
+    {
+        title: "Learning",
+        icon: "📚",
+        skills: [
+            { name: "GSAP", level: 40 },
+            { name: "Anime.js", level: 30 },
+            { name: "Tailwind CSS", lebel: 45 },
+        ],
+    },
+];
+---
+
+<BaseLayout title="Skills">
+  <!-- ページヘッダー -->
+  <section class="page-header">
+    <div class="container">
+      <span class="section-number">02</span>
+      <h1 class="page-title">Skills</h1>
+      <p class="page-desc">これまでに学んできた技術と、現在学習中のもの。</p>
+    </div>
+  </section>
+
+  <!-- スキルカード一覧 -->
+  <section class="skills-section">
+    <div class="container">
+      <div class="skills-grid">
+        {skillCategories.map((category) => (
+          <div class="skill-card">
+            <div class="card-header">
+              <span class="card-icon">{category.icon}</span>
+              <h2 class="card-title">{category.title}</h2>
+            </div>
+            <ul class="skill-list">
+              {category.skills.map((skill) => (
+                <li class="skill-item">
+                  <div class="skill-info">
+                    <span class="skill-name">{skill.name}</span>
+                    <span class="skill-level">{skill.level}%</span>
+                  </div>
+                  <div class="skill-bar">
+                    <div class="skill-fill" style={`width: ${skill.level}%`}></div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ── ページヘッダー ── */
+  .page-header {
+    padding-top: 60px;
+    padding-bottom: 0;
+  }
+
+  .section-number {
+    font-family: var(--font-mono);
+    font-size: 64px;
+    font-weight: 700;
+    color: var(--bg-card);
+    line-height: 1;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .page-title {
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 700;
+    letter-spacing: -2px;
+    margin-bottom: 16px;
+  }
+
+  .page-desc {
+    color: var(--text-secondary);
+    font-size: 16px;
+    max-width: 480px;
+  }
+
+  /* ── スキルグリッド ── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  /* ── スキルカード ── */
+  .skill-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .skill-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), 0 0 20px var(--accent-glow);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .card-icon {
+    font-size: 24px;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+
+  .card-title {
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  /* ── スキルリスト ── */
+  .skill-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .skill-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .skill-name {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .skill-level {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  /* ── プログレスバー ── */
+  .skill-bar {
+    width: 100%;
+    height: 6px;
+    background: var(--bg-secondary);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .skill-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), #8b5cf6);
+    border-radius: 3px;
+    transition: width 1s ease-out;
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+
+  // カードが順番にフェードイン
+  gsap.from('.skill-card', {
+    opacity: 0,
+    y: 30,
+    duration: 0.6,
+    stagger: 0.12,
+    ease: 'power2.out',
+    delay: 0.2,
+  });
+</script>
