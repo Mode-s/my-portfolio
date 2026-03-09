@@ -6,33 +6,77 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <section class="hero">
     <div class="container">
       <p class="hero-tag">Web Developer</p>
-      <h1 class="hero-title">Hello, I'm Shota.</h1>
+      <h1 class="hero-title">
+				<span class="line">Hello,</span>
+        <span class="line">I'm <span class="highlight">Shota</span>.</span>
+			</h1>
       <p class="hero-sub">フロントエンド技術を学びながら、ものづくりを楽しんでいます。</p>
+			<div class="hero-cta">
+        <a href="/projects" class="btn-primary">Works を見る</a>
+        <a href="/blog" class="btn-ghost">Blog を読む</a>
+      </div>
+    </div>
+		<div class="hero-glow"></div>
+  </section>
+	<section class="about" id="about">
+    <div class="container about-grid">
+      <div class="about-label">
+        <span class="section-number">01</span>
+        <span class="section-tag">About</span>
+      </div>
+      <div class="about-content">
+        <h2 class="about-title">自分について</h2>
+        <p class="about-text">
+          Web開発を学び始めたフロントエンドエンジニア志望です。
+          JavaScript / TypeScript / React を学び、
+          現在はAstroを使ったポートフォリオ制作に取り組んでいます。
+        </p>
+        <p class="about-text">
+          きれいなUIとスムーズなアニメーションのあるサイトを作ることが好きです。
+        </p>
+      </div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
   .hero {
+    position: relative;
     display: flex;
     align-items: center;
     min-height: calc(100vh - 64px);
+    overflow: hidden;
   }
 
   .hero-tag {
     font-family: var(--font-mono);
     font-size: 14px;
     color: var(--accent);
-    margin-bottom: 16px;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0;
   }
 
   .hero-title {
-    font-size: clamp(40px, 8vw, 72px);
+    font-size: clamp(48px, 9vw, 80px);
     font-weight: 700;
-    letter-spacing: -2px;
+    letter-spacing: -3px;
     line-height: 1.1;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
+  }
+
+  .hero-title .line {
+    display: block;
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  .highlight {
+    background: linear-gradient(135deg, var(--accent), #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   .hero-sub {
@@ -40,5 +84,132 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     color: var(--text-secondary);
     max-width: 480px;
     line-height: 1.8;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    margin-top: 36px;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .btn-primary {
+    padding: 12px 28px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px var(--accent-glow);
+    opacity: 1;
+  }
+
+  .btn-ghost {
+    padding: 12px 28px;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--text-primary);
+    color: var(--text-primary);
+    opacity: 1;
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: 20%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(80px);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .about-label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .section-number {
+    font-family: var(--font-mono);
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--bg-card);
+    line-height: 1;
+  }
+
+  .section-tag {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .about-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+
+  .about-text {
+    color: var(--text-secondary);
+    font-size: 16px;
+    line-height: 1.9;
+    margin-bottom: 16px;
+    max-width: 560px;
   }
 </style>
+
+<script>
+  import gsap from 'gsap';
+
+  gsap.timeline({ delay: 0.3 })
+    .to('.hero-tag', {
+      opacity: 1,
+      duration: 0.6,
+      ease: 'power2.out',
+    })
+    .to('.hero-title .line', {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      stagger: 0.15,
+      ease: 'power3.out',
+    }, '-=0.3')
+    .to('.hero-sub', {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: 'power2.out',
+    }, '-=0.4')
+    .to('.hero-cta', {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: 'power2.out',
+    }, '-=0.3');
+</script>
