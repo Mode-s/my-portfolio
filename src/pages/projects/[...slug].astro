@@ -1,0 +1,163 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// 全プロジェクトのパスを生成
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await project.render();
+---
+
+<BaseLayout title={project.data.title}>
+  <section class="detail-header">
+    <div class="container">
+      <a href="/projects" class="back-link">← Projects に戻る</a>
+      <h1 class="detail-title">{project.data.title}</h1>
+      <p class="detail-desc">{project.data.description}</p>
+      <div class="detail-tags">
+        {project.data.tags.map((tag) => (
+          <span class="tag">{tag}</span>
+        ))}
+      </div>
+      <div class="detail-links">
+        {project.data.github && (
+          <a href={project.data.github} target="_blank" class="link-btn">
+            GitHub
+          </a>
+        )}
+        {project.data.demo && (
+          <a href={project.data.demo} target="_blank" class="link-btn link-demo">
+            Live Demo
+          </a>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <section class="detail-body">
+    <div class="container prose">
+      <Content />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .detail-header {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+
+  .back-link {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-secondary);
+    display: inline-block;
+    margin-bottom: 24px;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover {
+    color: var(--accent);
+  }
+
+  .detail-title {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 700;
+    letter-spacing: -2px;
+    margin-bottom: 12px;
+  }
+
+  .detail-desc {
+    color: var(--text-secondary);
+    font-size: 16px;
+    margin-bottom: 20px;
+    max-width: 560px;
+  }
+
+  .detail-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 4px 10px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-secondary);
+  }
+
+  .detail-links {
+    display: flex;
+    gap: 12px;
+  }
+
+  .link-btn {
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 24px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+  }
+
+  .link-btn:hover {
+    border-color: var(--text-primary);
+    color: var(--text-primary);
+    opacity: 1;
+  }
+
+  .link-demo {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  .link-demo:hover {
+    color: #fff;
+    box-shadow: 0 4px 16px var(--accent-glow);
+  }
+
+  /* ── Markdown本文のスタイル ── */
+  .prose {
+    max-width: 640px;
+  }
+
+  .prose :global(h2) {
+    font-size: 24px;
+    font-weight: 600;
+    margin-top: 40px;
+    margin-bottom: 16px;
+  }
+
+  .prose :global(p) {
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.9;
+    margin-bottom: 16px;
+  }
+
+  .prose :global(ul) {
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.9;
+    padding-left: 20px;
+    margin-bottom: 16px;
+  }
+
+  .prose :global(li) {
+    margin-bottom: 8px;
+  }
+</style>

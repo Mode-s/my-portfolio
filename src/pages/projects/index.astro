@@ -1,0 +1,167 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// Content Collectionsからプロジェクトデータを取得
+const projects = (await getCollection('projects')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<BaseLayout title="Projects">
+  <section class="page-header">
+    <div class="container">
+      <span class="section-number">03</span>
+      <h1 class="page-title">Projects</h1>
+      <p class="page-desc">これまでに作った作品たち。</p>
+    </div>
+  </section>
+
+  <section class="projects-section">
+    <div class="container">
+      <div class="projects-list">
+        {projects.map((project, index) => (
+          <a href={`/projects/${project.slug}`} class="project-card">
+            <div class="project-index">
+              <span>{String(index + 1).padStart(2, '0')}</span>
+            </div>
+            <div class="project-body">
+              <h2 class="project-title">{project.data.title}</h2>
+              <p class="project-desc">{project.data.description}</p>
+              <div class="project-tags">
+                {project.data.tags.map((tag) => (
+                  <span class="tag">{tag}</span>
+                ))}
+              </div>
+            </div>
+            <div class="project-arrow">→</div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-header {
+    padding-top: 60px;
+    padding-bottom: 0;
+  }
+
+  .section-number {
+    font-family: var(--font-mono);
+    font-size: 64px;
+    font-weight: 700;
+    color: var(--bg-card);
+    line-height: 1;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .page-title {
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 700;
+    letter-spacing: -2px;
+    margin-bottom: 16px;
+  }
+
+  .page-desc {
+    color: var(--text-secondary);
+    font-size: 16px;
+  }
+
+  /* ── プロジェクト一覧 ── */
+  .projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .project-card {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 32px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    color: var(--text-primary);
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .project-card:hover {
+    transform: translateX(8px);
+    border-color: var(--accent);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    opacity: 1;
+  }
+
+  .project-index span {
+    font-family: var(--font-mono);
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--border);
+    transition: color 0.3s;
+  }
+
+  .project-card:hover .project-index span {
+    color: var(--accent);
+  }
+
+  .project-body {
+    flex: 1;
+  }
+
+  .project-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .project-desc {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+
+  .project-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 4px 10px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-secondary);
+  }
+
+  .project-arrow {
+    font-size: 24px;
+    color: var(--border);
+    transition: color 0.3s, transform 0.3s;
+  }
+
+  .project-card:hover .project-arrow {
+    color: var(--accent);
+    transform: translateX(4px);
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+
+  gsap.from('.project-card', {
+    opacity: 0,
+    x: -20,
+    duration: 0.5,
+    stagger: 0.1,
+    ease: 'power2.out',
+    delay: 0.2,
+  });
+</script>
